@@ -24,15 +24,17 @@ export default function TableCard({
   return (
     <>
       {isEditing ? (
-        <textarea
-          className="bg-slate-200 outline-none border-0 rounded-md p-2 min-w-32"
-          value={content.text}
-          onChange={(e) => {
-            changeTableBody(row, col, e.currentTarget.value);
-          }}
-        ></textarea>
+        <td>
+          <textarea
+            className="bg-slate-200 outline-none border-0 rounded-md p-2 min-w-32"
+            value={content.text}
+            onChange={(e) => {
+              changeTableBody(row, col, e.currentTarget.value);
+            }}
+          ></textarea>
+        </td>
       ) : (
-        <div
+        <td
           className={clsx(
             "cursor-pointer p-4 bg-slate-200 rounded-md whitespace-pre min-w-32",
             isActive && "animate-flip-in"
@@ -46,7 +48,7 @@ export default function TableCard({
           }}
         >
           {content.isDisplayed && content.text}
-        </div>
+        </td>
       )}
     </>
   );

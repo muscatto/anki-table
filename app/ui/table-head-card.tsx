@@ -16,17 +16,19 @@ export default function TableHeadCard({
   return (
     <>
       {isEditing ? (
-        <textarea
-          className="bg-gray-200 outline-none border-0 rounded-md p-2 min-w-32"
-          value={text}
-          onChange={(e) => {
-            handleChangeHead(id, e.currentTarget.value, headType);
-          }}
-        ></textarea>
+        <th>
+          <textarea
+            className="bg-gray-200 outline-none border-0 rounded-md p-2 min-w-32 font-normal"
+            value={text}
+            onChange={(e) => {
+              handleChangeHead(id, e.currentTarget.value, headType);
+            }}
+          ></textarea>
+        </th>
       ) : (
-        <div className="bg-gray-200 p-4 rounded-md whitespace-pre min-w-32 font-semibold">
+        <th className="bg-gray-200 p-4 rounded-md whitespace-pre min-w-32">
           {text}
-        </div>
+        </th>
       )}
     </>
   );

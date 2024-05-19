@@ -167,7 +167,7 @@ export default function Table() {
 
   return (
     <>
-      <div className="flex flex-wrap justify-center gap-2 mb-5">
+      <div className="flex flex-wrap justify-center gap-2 mb-5 px-3">
         {!isEditing && <HideButton onHideClick={handleHideAll} />}
         {isEditing && <HeadStatusButton changeHeadStatus={changeHeadStatus} />}
         {isEditing && (
@@ -184,53 +184,60 @@ export default function Table() {
           }}
         />
       </div>
-      <div className="flex w-screen overflow-auto p-3">
-        <div className="flex flex-col gap-2 text-lg mx-auto">
-          {tableItems.options.showHead && (
-            <div className="flex gap-2">
-              {tableItems.head.col.map((thText, i) => {
-                return (
-                  <TableHeadCard
-                    key={"h" + i}
-                    id={i}
-                    text={thText}
-                    isEditing={isEditing}
-                    headType="col"
-                    handleChangeHead={changeHead}
-                  />
-                );
-              })}
-            </div>
-          )}
-          {tableItems.body.map((trItem, i) => {
-            return (
-              <div key={"b" + i} className="flex gap-2">
-                {tableItems.options.showHead && (
-                  <TableHeadCard
-                    id={i}
-                    text={tableItems.head.row[i]}
-                    isEditing={isEditing}
-                    headType="row"
-                    handleChangeHead={changeHead}
-                  />
-                )}
-                {trItem.map((thItem, j) => {
+
+      <div className="flex w-screen overflow-auto px-3">
+        <table className="text-lg border-separate border-spacing-2 mx-auto">
+          <thead>
+            {tableItems.options.showHead && (
+              <tr>
+                {tableItems.head.col.map((thText, i) => {
                   return (
-                    <TableCard
-                      key={String(i) + String(j)}
-                      row={i}
-                      col={j}
-                      content={thItem}
+                    <TableHeadCard
+                      key={"h" + i}
+                      id={i}
+                      text={thText}
                       isEditing={isEditing}
-                      changeTableBody={changeTableBody}
-                      changeTableBodyShow={changeTableBodyShow}
+                      headType="col"
+                      handleChangeHead={changeHead}
                     />
                   );
                 })}
-              </div>
-            );
-          })}
-        </div>
+              </tr>
+            )}
+          </thead>
+
+          <tbody>
+            {tableItems.body.map((trItem, i) => {
+              return (
+                <tr key={"b" + i}>
+                  {tableItems.options.showHead && (
+                    <TableHeadCard
+                      id={i}
+                      text={tableItems.head.row[i]}
+                      isEditing={isEditing}
+                      headType="row"
+                      handleChangeHead={changeHead}
+                    />
+                  )}
+                  {trItem.map((thItem, j) => {
+                    return (
+                      <TableCard
+                        key={String(i) + String(j)}
+                        row={i}
+                        col={j}
+                        content={thItem}
+                        isEditing={isEditing}
+                        changeTableBody={changeTableBody}
+                        changeTableBodyShow={changeTableBodyShow}
+                      />
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+
         {isEditing && (
           <div className="my-auto">
             <AddButton handleAddClick={handleAddColumnClick} />
@@ -238,6 +245,7 @@ export default function Table() {
           </div>
         )}
       </div>
+
       {isEditing && (
         <div className="flex justify-center">
           <AddButton handleAddClick={handleAddRowClick} />
