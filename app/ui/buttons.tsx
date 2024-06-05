@@ -48,17 +48,19 @@ export function DeleteButton({
 }
 
 export function HeadStatusButton({
-  changeHeadStatus,
+  onChangeHeadClick,
+  text,
 }: {
-  changeHeadStatus: () => void;
+  onChangeHeadClick: () => void;
+  text: string;
 }) {
   return (
     <button
-      onClick={changeHeadStatus}
+      onClick={onChangeHeadClick}
       className="text-white bg-black rounded-md p-2 active:opacity-70"
     >
       <TableCellsIcon className="h-6 w-6 inline-block" />
-      ラベルの表示/非表示
+      {text}
     </button>
   );
 }

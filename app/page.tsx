@@ -21,7 +21,8 @@ interface TableItems {
     isDisplayed: boolean;
   }[][];
   options: {
-    showHead: boolean;
+    showTopHead: boolean;
+    showLeftHead: boolean;
   };
 }
 
@@ -49,7 +50,8 @@ export default function Home() {
       ],
     ],
     options: {
-      showHead: true,
+      showTopHead: true,
+      showLeftHead: true,
     },
   };
 
@@ -70,9 +72,14 @@ export default function Home() {
     localStorage.setItem("anki-table", JSON.stringify(newItems));
   };
 
-  const changeHeadStatus = () => {
+  const changeHeadStatus = (position: 'top' | 'left') => {
     const newItems = { ...tableItems };
-    newItems.options.showHead = !newItems.options.showHead;
+    if (position === 'top') {
+      newItems.options.showTopHead = !newItems.options.showTopHead;
+    }
+    if (position === 'left') {
+      newItems.options.showLeftHead = !newItems.options.showLeftHead;
+    }
     updateTable(newItems);
   };
 
@@ -161,29 +168,34 @@ export default function Home() {
   return (
     <main>
       <div className="flex flex-wrap justify-center gap-2 mb-5 px-3">
-        {!isEditing && <HideButton onHideClick={handleHideAll} />}
-        {isEditing && <HeadStatusButton changeHeadStatus={changeHeadStatus} />}
-        {isEditing && (
-          <ResetButton
-            resetTable={() => {
-              updateTable(initialItems);
-            }}
-          />
-        )}
         <EditButton
           isEditing={isEditing}
           changeEditMode={() => {
             setIsEditing((prev) => !prev);
           }}
         />
+        {isEditing ? (
+          <>
+            <HeadStatusButton onChangeHeadClick={() => {changeHeadStatus('top')}} text="列ラベル" />
+            <HeadStatusButton onChangeHeadClick={() => {changeHeadStatus('left')}} text="行ラベル" />
+            <ResetButton
+              resetTable={() => {
+                updateTable(initialItems);
+              }}
+            />
+          </>
+        ) : (
+          <HideButton onHideClick={handleHideAll} />
+        )}
       </div>
 
       <div className="flex w-screen overflow-auto px-3">
         <table className="text-lg border-separate border-spacing-2 mx-auto">
           <thead>
-            {tableItems.options.showHead && (
+            {tableItems.options.showTopHead && (
               <tr>
                 {tableItems.head.col.map((thText, i) => {
+                  if (!tableItems.options.showLeftHead && i === 0) return;
                   return (
                     <TableHeadCard
                       key={"h" + i}
@@ -203,7 +215,7 @@ export default function Home() {
             {tableItems.body.map((trItem, i) => {
               return (
                 <tr key={"b" + i}>
-                  {tableItems.options.showHead && (
+                  {tableItems.options.showLeftHead && (
                     <TableHeadCard
                       id={i}
                       text={tableItems.head.row[i]}
