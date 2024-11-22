@@ -47,7 +47,9 @@ export default function TableCard({
             setIsActive(false);
           }}
         >
-          {content.isDisplayed && content.text}
+          <span className={clsx(content.isDisplayed ? "visible" : "invisible")}>
+            {content.text}
+          </span>
         </td>
       )}
     </>
